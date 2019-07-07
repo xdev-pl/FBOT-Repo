@@ -90,6 +90,7 @@ public class ExtendedConfiguration {
                 .put("jakies_uid_administratora_z", 3)
                 .build();
 
+
         @CfgComment("Wartosci dla metody ktora ustawia na kanale admina czy jest online/afk/offline")
         @CfgComment("Jest to napis który będzie się wyświetlać na kanale administratora w niektórych przypadkach (np będzie away)")
         @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
