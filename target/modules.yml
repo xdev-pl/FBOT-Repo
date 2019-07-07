@@ -1,0 +1,224 @@
+#  
+#  
+# █▀▀ █▀▀▄ █▀▀█ ▀▀█▀▀
+# █▀▀ █▀▀▄ █░░█ ░░█░░
+# ▀░░ ▀▀▀░ ▀▀▀▀ ░░▀░░
+# https://github.com/xdev-pl
+#  
+# Welcome to the module configuration file.
+# Ustawienia dotyczace klasy zarzadzajacej AdminUpdaterModule
+admin-updater-module-settings: 
+  # Lista grup administracyjnych, podaj id grup wedlug schematu.
+  admin-updater-module-admin-groups: 
+  - 19
+  - 20
+  - 21
+  - 22
+  - 23
+  - 24
+  # Lista administratorow, podaj ich UID, i ID ich kanalu wedlug schematu.
+  admin-updater-module-staff-uids: 
+    dd69vc/2HV5xTBNqx5gO1OEkKnk=: 83
+    B4HOyJuCf25khgnf+6zwQ001XEw=: 2
+    syJ6tnNb/pro+cEmiFVVek7ffU8=: 87
+  # ID Kanalu na ktorym ma byc opis aktywnej administracji
+  admin-updater-module-staff-status-channelid: 32
+  # Wartosci dla metody ktora ustawia na kanale admina czy jest online/afk/offline
+  admin-updater-module-status-values: 
+  - " - offline [ ✘ ]"
+  - " - online [ ✔ ]"
+  - " - AFK [ ⌚ ]"
+
+# Ustawienia dotyczace klasy zarzadzajacej ChannelUpdaterModule
+channel-updater-module-settings: 
+  # Virtual Server Name, nazwa serwera ts3
+  channel-updater-module-vsn: "Serwer testowy FBOT [Online: %online]"
+
+# Ustawienia dotyczace klasy zarzadzajacej HelpCenterModule
+help-center-module-settings: 
+  # Czy sprawdzanie wydarzen na centrum pomocy ma byc wlaczone?
+  # Automatyczna ranga - mezczyna/kobieta, oczekiwanie na administratora itd.
+  # true - wlaczony | false - wylaczony
+  help-center-module-status: true
+  # Od ktorej godziny do ktorej ma być wlaczone centrum pomocy
+  enabled-time: "10:00@22:00"
+  # ID Grupy typu Administrator
+  # Wszyscy z grupy Administrator będą dostawać powiadomienia z centrum pomocy.
+  help-center-module-admin-groupid: 6
+  # Wiadomosc do administratorow gdy ktos na nich oczekuje
+  help-center-someone-need-helpmessage: Ktos potrzebuje twojej pomocy!
+  # ID Grupy kobieta
+  woman-group-id: 153
+  # ID Grupy mezczyna
+  man-group-id: 152
+  # ID Kanalu na ktorym na byc nadawana ranga kobieta
+  woman-group-assigner-channelid: 16
+  # ID Kanalu na ktorym ma byc nadawana ranga mezczyzna
+  man-group-assigner-channelid: 15
+  # Czy ma byc wymagany spedzony czas aby nadac kobiete/mezczyzne?
+  # Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10, oznacza to 10 minut
+  time-spent-requirement: 10
+  # Informacja gdy uzytkownik jest juz zarejestrowany
+  user-already-registered: Jestes juz zarejestrowany/a.
+  # Czy ma byc wymagany spedzony czas aby stworzyc uzytkownikowi prywatna strefe?
+  # Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10, oznacza to 10 minut
+  channel-creator-time-requirment: 10
+  # ID Kanalu na ktory ma wejsc uzytkownik aby dostac prywatna strefe.
+  channel-creator-channelid: 17
+  # Jaka ma byc ilosc subkanalow stworzonych w prywatnej strefie uzytkownika?
+  # Standardowo: 3, mozesz wpisac ile chcesz, ale nie mniej niz 1 ani wiecej niz 2 miliony.
+  amount-of-subchannels-to-be-created: 3
+  # Jak ma sie rozpoczynac nazwa subkanalu?
+  # Zostaw spacje na koncu, po Kanal bedzie podany numer i nazwa wlasciciela subkanalu.
+  subchannel-start-name: Kanal
+  # ID Kanalu na ktorym ma byc uzytkownik jesli ma sprawe do administracji
+  help-center-admin-channelid: 21
+  # ID kanalu od ktorego maja sie tworzyc prywatne kanaly uzytkownikow
+  help-center-module-privatechannels-starterchannelid: 4
+  # ID grupy ktora ma nadac bot po stworzeniu prywatnej strefy
+  help-center-module-private-channel-group: 5
+
+# Ustawienia dotyczace klasy zarzadzajacej TopUpdaterModule
+top-updater-module-settings: 
+  # Informacja na temat topek:
+  # Kazda topka oprocz ilosci polaczen, bedzie aktualizowalay czas tylko przy wyjsciu klienta
+  # Tlumaczenie dla kowalskiego: Gdy uzytkownik X ma na serwerze online 1 dzien 2 godziny, a nie pokazuje go w topce zaliczy go dopiero jak wyjdzie z serwera.
+  # Moze sie to zmienic w kolejnej wersji.
+  # Czy wykonywanie funkcji topek ma byc wlaczone?
+  # Top polaczen, spedzonego czasu, ilosci polaczen.
+  # true - wlaczony | false - wylaczony
+  top-updater-module-status: true
+  # Ile ma byc wynikow w topkach?
+  # Standardowo: 10
+  # Ustawianie bardzo duzych ilosci obciazy twoja maszyne(> 5k)
+  top-updater-module-indexamount: 10
+  # Co ile czasu maja sie aktualizowac topki?
+  # Podawaj w sekundach.
+  top-updater-module-interval: 10
+  # ID Kanalu do Top Ilości połączeń
+  top-updater-module-top-connections-channelid: 0
+  # ID Kanalu do Top Najdłuższych połączeń
+  top-updater-module-top-logestConnections-channelid: 0
+  # ID Kanalu do Top spedzonego czasu na serwerze.
+  top-updater-module-top-spent-time-channelid: 0
+
+# Ustawienia dotyczace klasy zarzadzajacej ClientUpdaterModule
+client-updater-module-settings: 
+  # Czy wykonywanie funkcji ClientUpdaterModule ma byc wlaczone?
+  # Wrzucanie na kanal afk, (Nie zaimplementowane) sprawdzanie rang blokad.
+  # true - wlaczony | false - wylaczony
+  client-updater-module-status: true
+  # Co ile ma bot sprawdzac czy ktos sie zmutowal
+  # Optymalnie jest ustawic 3-5 sekund.
+  client-updater-module-afk-check-interval: 5
+  # ID grupy ktora ma byc ignorowana podczas przerzucania na afk
+  client-updater-module-ignore-groupid: 0
+  # ID kanalu na ktory ma wrzucac gdy uzytkownik jest afk
+  client-updater-module-afk-channelid: 0
+
+# Ustawienia dotyczace klasy zarzadzajacej ClientJoinServerListener
+client-join-server-listener-settings: 
+  # Wiadomosc powitalna po wejsciu na serwer
+  client-join-message: 
+  - Witaj na serwerze!
+  - Zyczymy milych i udanych rozmów
+  # Co ma wstawiac w opis uzytkownika gdy jest pusty
+  # Masz do wyboru puste pole lub %dbId - numer klienta w bazie
+  client-join-description-if-empty: "Uzytkownik serwera numer: %dbId"
+  # Czy bot ma blokowac VPN?
+  client-join-vpn-kick-status: true
+  # Powod wyrzucenia podczas gdy bot wykryje ze uzytkownik korzysta z VPN
+  client-join-vpn-kickmessage: "Tutaj nie tolerujemy VPN :)"
+  # Nicki ktore maja byc blokowane.
+  client-join-bad-nicknames: 
+  - kurwa
+  - admin
+  - serveradmin
+  - chuj
+  - skurwiel
+  # Powod wyrzucenia podczas gdy bot wykryje zly nick uzytkownika
+  client-join-badnickname-kickmessage: Kultury czlowieku z tym nickiem co?
+
+# Ustawienia dotyczace klasy zarzadzajacej kanalami informacyjnymi
+information-channels-module-settings: 
+  # ID kanalu z najnowszym uzytkownikiem
+  information-channels-module-new-user-channelid: 0
+  # Nazwa kanalu z najnowszym uzytkownikiem
+  information-channels-module-new-user-channelname: "Najnowszy uzytkownik: %name"
+  # Nazwa kanalu z aktualna godzina
+  information-channels-module-time-channelname: "Godzina: %hms"
+  # ID kanalu z godzina
+  information-channels-module-time-channelid: 0
+  # Nazwa kanalu z aktualna iloscia % straconych pakietow
+  information-channels-module-lpackets-channelname: "Stracone pakiety: %packets"
+  # ID kanalu z straconymi pakietami
+  information-channels-module-lpackets-channelid: 0
+  # Nazwa kanalu z aktualna iloscia online osob
+  information-channels-module-online-channelname: "Online: %online"
+  # ID kanalu z aktualna iloscia osob
+  information-channels-module-online-channelid: 0
+  # Nazwa kanalu z aktualnym uptime serwera
+  information-channels-module-uptime-channelname: "Uptime serwera: %uptime"
+  # ID kanalu z aktualnym uptime serwera
+  information-channels-module-uptime-channelid: 0
+  # Nazwa kanalu z aktualna iloscia kanalow serwera
+  information-channels-module-channelsAmount-channelname: "Ilość Kanałów: %channelsAmount"
+  # ID kanalu z aktualna iloscia kanalow serwera
+  information-channels-module-channelsAmount-channelid: 0
+  # Nazwa kanalu z aktualna iloscia kanalow serwera
+  information-channels-module-ping-channelname: "Ping: %ping"
+  # ID kanalu z aktualna iloscia pingu serwera
+  information-channels-module-ping-channelid: 0
+  # ID kanalu z aktualnym rekordem uzytkownikow
+  information-channels-module-users-record-channelid: 0
+  # Nazwa kanalu z aktualnym rekordem uzytkownikow
+  information-channels-module-users-record-channelname: "Rekord uzytkownikow: %record"
+  # Opis kanalu z rekordem uzytkownikow
+  information-channels-module-users-record-channeldesc: 
+  - Aktualny rekord uzytkownikow wynosi %record
+  - "Zostal ustanowiony: %date"
+
+# Ustawienia od modułu aktualizatora klienta
+client-updater-module-settings: 
+  # Tutaj ustalasz od jakiej ilości czasu ma mieć użytkownik wyższy poziom
+  # Przyklad: Uzytkownik X ma naliczone 15 minut od pierwszego wejścia i dostaje rangę o ID 1
+  # Ważne: Czas jest w minutach więc musisz pomnożyć na godziny. Możesz dodać ile chcesz wpisów.
+  level-time-group-id: 
+    60: 123
+    120: 124
+    180: 125
+    720: 126
+    1440: 127
+    2880: 128
+    4320: 129
+    6000: 130
+    7200: 131
+    9000: 132
+    12000: 133
+    15000: 134
+    18000: 135
+    21000: 136
+    24000: 137
+    27000: 138
+    30000: 139
+    33000: 140
+    36000: 141
+    39000: 142
+
+# Tutaj masz możliwość ustawienia który moduł ma być włączony lub jego poszczególne funkcje.
+module-settings: 
+  # Ustawienia Aktualizatora rzeczy zwiazanych z administracją
+  admin-updater-module-settings: 
+    status: true
+    update-interval: 10
+    status-on-channel-status: true
+    status-on-channel-desc-status: true
+  # Ustawienia aktualizatora kanałów 
+  channel-updater-module-settings: 
+    status: true
+    update-interval: 10
+    x: true
+    vsn-update-status: true
+    time-update-status: true
+
+

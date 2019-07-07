@@ -1,0 +1,1 @@
+screen -S java -jar "FireBOT v1.0-SNAPSHOT.jar" --start

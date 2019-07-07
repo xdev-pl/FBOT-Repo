@@ -1,0 +1,46 @@
+#  
+#  
+# █▀▀ █▀▀▄ █▀▀█ ▀▀█▀▀
+# █▀▀ █▀▀▄ █░░█ ░░█░░
+# ▀░░ ▀▀▀░ ▀▀▀▀ ░░▀░░
+# https://github.com/xdev-pl
+#  
+# Welcome to the configuration file.
+# Wszystko co zwiazane z baza danych.
+database-configurable-section: 
+  # Typ bazy danych
+  # Typy: SQLITE, MYSQL
+  storage-mode: MYSQL
+  # Adres serwera mysql
+  mysql-server-address: localhost
+  # Port serwera mysql
+  # Standardowo: 3306
+  mysql-server-port: "3306"
+  # Uzytkownik bazy danych
+  mysql-server-user: root
+  # Haslo do uzytkownika bazy danych
+  mysql-server-password: MlBPFwv0
+  # Baza danych w ktorej ma zapisywac dane
+  # Standardowo: firebot
+  mysql-server-database: firebot
+
+# Wszystko co zwiazane z polaczeniem sie bota na serwer
+query-configurable-section: 
+  # ID Wirtualnego serwera
+  # Jesli posiadasz wiecej niz jeden wirtualny serwer, wskaz na ktory ma wchodzic bot.
+  virtual-server-id: 1
+  # Haslo do wirtualnego serwera
+  # Jesli nie wiesz jakie masz haslo do query, mozesz je zmienic, poszukaj poradnika na forach.
+  virtual-server-query-password: NjjZogmd
+  # Adres IP na ktory ma wchodzic bot.
+  virtual-server-address: localhost
+  # Port wirtualnego serwera
+  # Standardowo: 10011
+  virtual-sever-port: 10011
+  # Login do wirutalnego serwera
+  # Standardowo: serveradmin
+  virutal-server-login: serveradmin
+  # Nazwa bota na serwerze.
+  bot-name: "FBOT @ Ja tylko pracuję :)"
+
+
