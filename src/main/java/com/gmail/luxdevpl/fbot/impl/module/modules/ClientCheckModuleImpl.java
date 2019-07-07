@@ -71,7 +71,7 @@ public class ClientCheckModuleImpl extends AbstractModule implements Runnable {
 
                             //Jesli uzytkownik jest juz w jakiejs grupie AFK
                             if (this.afkClientGroups.containsKey(ts3Client.getUniqueIdentifier())) {
-                                //Jesli grupa w ktorej jest bedzie taka sama co jego aktualny czas afk
+                                //Jesli grupa w ktorej jest bedzie taka sama co jego aktualny czas afkk
                                 if (this.afkClientGroups.get(ts3Client.getUniqueIdentifier()).equals(this.afkGroups.get(idleTime))) {
                                     return;
                                 }
