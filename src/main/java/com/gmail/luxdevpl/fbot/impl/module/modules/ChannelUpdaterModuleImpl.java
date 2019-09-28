@@ -34,7 +34,7 @@ public class ChannelUpdaterModuleImpl extends AbstractModule implements Runnable
 
             api.updateVirtualServerName(settings.virtualServerName.replace("%online", String.valueOf(api.getOnlineClients())));
 
-            api.editChannelName(settings.timeChannelId, settings.timeChannelName.replace("%hms", String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")))));
+            api.editChannelName(settings.timeChannelId, settings.timeChannelName.replace("%hms", LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))));
             api.editChannelName(settings.onlineChannelId, settings.onlineChannelName.replace("%online", String.valueOf(api.getOnlineClients())));
             api.editChannelName(settings.pingAmountChannelId, settings.pingAmountChannelName.replace("%ping", String.valueOf(api.getAveragePing())));
             api.editChannelName(settings.lostPacketsChannelid, settings.lostPacketsChannelName.replace("%packets", String.valueOf(api.getAveragePacketLoss())));
