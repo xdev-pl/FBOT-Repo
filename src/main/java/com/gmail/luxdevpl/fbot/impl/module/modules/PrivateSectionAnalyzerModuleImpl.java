@@ -37,25 +37,25 @@ public class PrivateSectionAnalyzerModuleImpl extends AbstractModule implements 
 
             long daysBetween = ChronoUnit.DAYS.between(date, LocalDate.now());
 
-            int number = Integer.valueOf(StringUtils.substringBefore(key.getName(), "."));
+            int number = Integer.parseInt(StringUtils.substringBefore(key.getName(), "."));
+
+            if(daysBetween >= 4 && daysBetween < 7) {
+                getWrapper().getFbotApi().editChannelName(key.getId(), number + ". " + "Kanał zostanie niedługo zwolniony");
+                return;
+            }
 
             if(daysBetween >= 7) {
                 getWrapper().getFbotApi().editChannelName(key.getId(), number + ". Prywatny wolny kanał");
                 getWrapper().getFbotApi().editChannelTopic(key.getId(), "free");
-                getWrapper().getFbotApi().editChannel(key.getId(), Collections.singletonMap(ChannelProperty.CHANNEL_MAXCLIENTS, String.valueOf("0")));
+                getWrapper().getFbotApi().editChannel(key.getId(), Collections.singletonMap(ChannelProperty.CHANNEL_MAXCLIENTS, "0"));
                 getWrapper().getFbotApi().removeSubchannels(key);
-                return;
-            }
-
-            if(daysBetween >= 4 && daysBetween <= 6) {
-                getWrapper().getFbotApi().editChannelName(key.getId(), number + ". " + "Kanał zostanie niedługo zwolniony");
             }
         });
     }
 
     @Override
     public void enable() {
-        super.getExecutorService().scheduleWithFixedDelay(this, getHoursUntilTarget(24), 24, TimeUnit.HOURS);
+        super.getExecutorService().scheduleWithFixedDelay(this, 1, 5, TimeUnit.MINUTES);
     }
 
     @Override

@@ -72,7 +72,7 @@ public class AdvandedLogEntrySearcherModule extends AbstractModule implements Ru
 
                         String[] base = StringUtils.substringsBetween(entry, "(id:", ")");
 
-                        ClientAddedToServerGroupEvent clientOwnPermissionsUpdateEvent = new ClientAddedToServerGroupEvent(Integer.valueOf(base[0]), Integer.valueOf(base[2]), Integer.parseInt(base[1]));
+                        ClientAddedToServerGroupEvent clientOwnPermissionsUpdateEvent = new ClientAddedToServerGroupEvent(Integer.parseInt(base[0]), Integer.parseInt(base[2]), Integer.parseInt(base[1]));
                         getWrapper().getEventCaller().fireInternalEvent(EventTypes.CLIENT_ADDED_TO_SERVERGROUP, clientOwnPermissionsUpdateEvent);
                     }
                 }

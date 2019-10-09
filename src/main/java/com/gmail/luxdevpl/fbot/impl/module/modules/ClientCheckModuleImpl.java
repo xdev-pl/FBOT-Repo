@@ -86,7 +86,7 @@ public class ClientCheckModuleImpl extends AbstractModule implements Runnable {
                                     getWrapper().getFbotApi().addClientToServerGroup(clientInfo.getDatabaseId(), this.afkGroups.get(idleTime));
 
                                 } else {
-                                    int createdIdleGroup = getWrapper().getUnsafeWrapper().copyServerGroup(164, idleTime, PermissionGroupDatabaseType.REGULAR);
+                                    int createdIdleGroup = getWrapper().getUnsafeWrapper().copyServerGroup(535, idleTime, PermissionGroupDatabaseType.REGULAR);
 
                                     this.afkGroups.put(idleTime, createdIdleGroup);
                                     this.afkClientGroups.remove(clientInfo.getUniqueIdentifier());
@@ -100,7 +100,7 @@ public class ClientCheckModuleImpl extends AbstractModule implements Runnable {
                                     getWrapper().getFbotApi().addClientToServerGroup(clientInfo.getDatabaseId(), this.afkGroups.get(idleTime));
                                     this.afkClientGroups.put(clientInfo.getUniqueIdentifier(), this.afkGroups.get(idleTime));
                                 } else {
-                                    int createdIdleGroup = getWrapper().getUnsafeWrapper().copyServerGroup(164, idleTime, PermissionGroupDatabaseType.REGULAR);
+                                    int createdIdleGroup = getWrapper().getUnsafeWrapper().copyServerGroup(535, idleTime, PermissionGroupDatabaseType.REGULAR);
 
                                     this.afkGroups.put(idleTime, createdIdleGroup);
                                     this.afkClientGroups.remove(clientInfo.getUniqueIdentifier());
