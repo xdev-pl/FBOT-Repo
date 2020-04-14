@@ -24,7 +24,7 @@
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.0.8" level="project" />
     <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:2.7.8" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" name="Maven: com.github.theholywaffle:teamspeak3-api:1.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.github.theholywaffle:teamspeak3-api:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.21" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20180813" level="project" />
   </component>

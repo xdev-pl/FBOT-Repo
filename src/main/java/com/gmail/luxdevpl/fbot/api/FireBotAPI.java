@@ -341,7 +341,8 @@ public class FireBotAPI {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
-        newChannelDescription = botWrapper.getStringUtils().findAndReplace(newChannelDescription, Arrays.asList("%lastTimeActive", "%lastSessionTime"), this.isClientOnline(uid) ? "teraz." : now.format(formatter), this.isClientOnline(uid) ? "Sesja aktualnie aktywna" : botWrapper.getStringUtils().getDurationBreakdown(System.currentTimeMillis() - this.getDatabaseClientInfoByUid(uid).getLastConnectedDate().getTime()));
+        newChannelDescription = botWrapper.getStringUtils().findAndReplace(newChannelDescription, "%lastTimeActive", this.isClientOnline(uid) ? "teraz." : now.format(formatter));
+        newChannelDescription = botWrapper.getStringUtils().findAndReplace(newChannelDescription, "%lastSessionTime", this.isClientOnline(uid) ? "Sesja aktualnie aktywna" : botWrapper.getStringUtils().getDurationBreakdown(System.currentTimeMillis() - this.getDatabaseClientInfoByUid(uid).getLastConnectedDate().getTime()));
 
         botWrapper.getFbotApi().editChannelDescription(channelToUpdate, newChannelDescription);
 
