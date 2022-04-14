@@ -28,7 +28,7 @@ public class PrivateSectionAnalyzerModuleImpl extends AbstractModule implements 
     public void performActions() {
         List<Channel> privateChannelList = getWrapper().getFbotApi().getChannels()
                 .stream()
-                .filter(channel -> channel.getParentChannelId() == getWrapper().getExtendedConfiguration().helpCenterModuleSettings.startWithPrivateChannelsId)
+                .filter(channel -> channel.getParentChannelId() == getWrapper().getExtendedConfiguration().helpCenterModuleSettings.privateChannelAssignerModule.startWithPrivateChannelsId)
                 .filter(channel -> !channel.getTopic().equals("free"))
                 .collect(Collectors.toList());
 
@@ -40,7 +40,7 @@ public class PrivateSectionAnalyzerModuleImpl extends AbstractModule implements 
             int number = Integer.parseInt(StringUtils.substringBefore(key.getName(), "."));
 
             if(daysBetween >= 4 && daysBetween < 7) {
-                getWrapper().getFbotApi().editChannelName(key.getId(), number + ". " + "Kanał zostanie niedługo zwolniony");
+                getWrapper().getFbotApi().editChannelName(key.getId(), number + ". " + "Kanał do zwolnienia.");
                 return;
             }
 
@@ -49,6 +49,9 @@ public class PrivateSectionAnalyzerModuleImpl extends AbstractModule implements 
                 getWrapper().getFbotApi().editChannelTopic(key.getId(), "free");
                 getWrapper().getFbotApi().editChannel(key.getId(), Collections.singletonMap(ChannelProperty.CHANNEL_MAXCLIENTS, "0"));
                 getWrapper().getFbotApi().removeSubchannels(key);
+                getWrapper().getFbotApi().removeChannelPermissions(key.getId());
+                getWrapper().getFbotApi().editChannelDescription(key.getId(), "");
+
             }
         });
     }

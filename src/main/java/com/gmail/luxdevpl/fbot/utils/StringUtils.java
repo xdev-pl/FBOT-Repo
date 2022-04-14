@@ -23,7 +23,7 @@ public class StringUtils {
     }
 
     public List<String> getUsersRecord(){
-        List<String> description = settings.channelUpdaterModuleSettings.newRecordChannelDescription;
+        List<String> description = settings.channelUpdaterModuleSettings.channelUpdaterModuleValues.newRecordChannelDescription;
 
         description = findAndReplace(description, "%record", String.valueOf(bot.getServerHook().getOnlineRecord()));
         description = findAndReplace(description, "%date", bot.getServerHook().getOnlineRecordTimestamp());
@@ -32,8 +32,8 @@ public class StringUtils {
     }
 
     public List<String> getNewUsers(){
-        List<String> newUsers = bot.getMainStorage().get().getNewUsers(settings.channelUpdaterModuleSettings.newUsersAmountIndex);
-        List<String> description = new ArrayList<>(settings.channelUpdaterModuleSettings.newUsersChannelDescription);
+        List<String> newUsers = bot.getMainStorage().get().getNewUsers(settings.channelUpdaterModuleSettings.channelUpdaterValuesOther.newUsersAmountIndex);
+        List<String> description = new ArrayList<>(settings.channelUpdaterModuleSettings.channelUpdaterModuleValues.newUsersChannelDescription);
 
         if(newUsers.size() == 0) {
             return findAndReplace(description, "%newUsers", "[b]Brak nowych uzytkownikow.[/b]");

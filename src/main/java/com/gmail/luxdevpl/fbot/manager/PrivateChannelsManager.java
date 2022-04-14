@@ -37,9 +37,9 @@ public class PrivateChannelsManager {
 
         String date = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now());
 
-        int number = Integer.valueOf(StringUtils.substringBefore(channel.getName(), "."));
+        int number = Integer.parseInt(StringUtils.substringBefore(channel.getName(), "."));
 
-        List<String> description = new ArrayList<>(botWrapper.getExtendedConfiguration().helpCenterModuleSettings.newCreatedPrivateChannelDescription);
+        List<String> description = new ArrayList<>(botWrapper.getExtendedConfiguration().helpCenterModuleSettings.privateChannelAssignerModule.newCreatedPrivateChannelDescription);
         description = botWrapper.getStringUtils().findAndReplace(description, "%date", date);
         description = botWrapper.getStringUtils().findAndReplace(description, "%owner", name);
 
@@ -57,13 +57,13 @@ public class PrivateChannelsManager {
             subChannelProperties.put(ChannelProperty.CHANNEL_FLAG_PERMANENT, "1");
             subChannelProperties.put(ChannelProperty.CPID, String.valueOf(channel.getId()));
 
-            fireApi.createChannel(x + ". " + configuration.helpCenterModuleSettings.subchannelStartWith, subChannelProperties);
+            fireApi.createChannel(x + ". " + configuration.helpCenterModuleSettings.privateChannelAssignerModule.subchannelStartWith, subChannelProperties);
         }
 
         botWrapper.getClientManager().getClient(clientId).ifPresent(client -> client.setPrivateChannel(channel.getId()));
 
         fireApi.moveClient(clientId, channel.getId());
-        fireApi.setClientChannelGroup(configuration.helpCenterModuleSettings.channelAdminGroup, channel.getId(), clientDatabaseId);
+        fireApi.setClientChannelGroup(configuration.helpCenterModuleSettings.privateChannelAssignerModule.channelAdminGroup, channel.getId(), clientDatabaseId);
     }
 
     private void checkFreeChannels() {
@@ -73,7 +73,7 @@ public class PrivateChannelsManager {
             for (int i = 1; i < 6; i++) {
                 Map<ChannelProperty, String> properties = new HashMap<>();
                 properties.put(ChannelProperty.CHANNEL_FLAG_PERMANENT, "1");
-                properties.put(ChannelProperty.CPID, String.valueOf(configuration.helpCenterModuleSettings.startWithPrivateChannelsId));
+                properties.put(ChannelProperty.CPID, String.valueOf(configuration.helpCenterModuleSettings.privateChannelAssignerModule.startWithPrivateChannelsId));
                 properties.put(ChannelProperty.CHANNEL_TOPIC, "free");
                 properties.put(ChannelProperty.CHANNEL_MAXCLIENTS, String.valueOf(0));
 
@@ -86,14 +86,14 @@ public class PrivateChannelsManager {
         return (int) botWrapper.getFbotApi().
                 getChannels().
                 stream().
-                filter(channel -> channel.getParentChannelId() == configuration.helpCenterModuleSettings.startWithPrivateChannelsId).count();
+                filter(channel -> channel.getParentChannelId() == configuration.helpCenterModuleSettings.privateChannelAssignerModule.startWithPrivateChannelsId).count();
     }
 
     private Channel getFreeChannel() {
         return botWrapper.getFbotApi().
                 getChannels().
                 stream().
-                filter(channel -> channel.getParentChannelId() == configuration.helpCenterModuleSettings.startWithPrivateChannelsId).
+                filter(channel -> channel.getParentChannelId() == configuration.helpCenterModuleSettings.privateChannelAssignerModule.startWithPrivateChannelsId).
                 filter(channel -> channel.getTopic().equals("free")).
                 findFirst().orElse(null);
     }

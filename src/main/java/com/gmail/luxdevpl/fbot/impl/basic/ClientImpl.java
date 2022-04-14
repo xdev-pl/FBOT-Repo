@@ -211,4 +211,9 @@ public class ClientImpl implements IClient {
         }
     }
 
+    @Override
+    public String toString(){
+        return "privateChannelId:"+this.privateChannelId+";";
+    }
+
 }

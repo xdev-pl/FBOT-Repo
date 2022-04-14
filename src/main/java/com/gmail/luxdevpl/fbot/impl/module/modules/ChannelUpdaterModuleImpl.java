@@ -20,42 +20,76 @@ public class ChannelUpdaterModuleImpl extends AbstractModule implements Runnable
 
     private StringUtils stringUtils;
 
+    private ExtendedConfiguration.ChannelUpdaterModuleSettings channelUpdater = getConfiguration().channelUpdaterModuleSettings;
+    private ExtendedConfiguration.ChannelUpdaterModuleSettings.ChannelUpdaterFunctionsStatus function = channelUpdater.channelUpdaterFunctionsStatus;
+    private ExtendedConfiguration.ChannelUpdaterModuleSettings.ChannelUpdaterModuleValues strings = channelUpdater.channelUpdaterModuleValues;
+    private ExtendedConfiguration.ChannelUpdaterModuleSettings.ChannelUpdaterValuesID ids = channelUpdater.channelUpdaterValuesID;
+
+    private ExtendedConfiguration.AdminChannelUpdaterModule adminChannelUpdaterModule = getConfiguration().adminUpdaterModuleSettings;
+
     public ChannelUpdaterModuleImpl(String name, IBotWrapper wrapper, ExtendedConfiguration configuration){
         super(name, wrapper, configuration);
 
         this.api = wrapper.getFbotApi();
         this.stringUtils = wrapper.getStringUtils();
+
+
     }
 
     @Override
     public void performActions(){
         try {
-            ExtendedConfiguration.ChannelUpdaterModuleSettings settings = getConfiguration().channelUpdaterModuleSettings;
 
-            api.updateVirtualServerName(settings.virtualServerName.replace("%online", String.valueOf(api.getOnlineClients())));
-
-            api.editChannelName(settings.timeChannelId, settings.timeChannelName.replace("%hms", LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))));
-            api.editChannelName(settings.onlineChannelId, settings.onlineChannelName.replace("%online", String.valueOf(api.getOnlineClients())));
-            api.editChannelName(settings.pingAmountChannelId, settings.pingAmountChannelName.replace("%ping", String.valueOf(api.getAveragePing())));
-            api.editChannelName(settings.lostPacketsChannelid, settings.lostPacketsChannelName.replace("%packets", String.valueOf(api.getAveragePacketLoss())));
-            api.editChannelName(settings.registerdClientsChannelId, settings.registerClientsChannelName.replace("%registred", String.valueOf(getWrapper().getServerHook().getRegistredClientAmount())));
-            api.editChannelName(settings.channelsAmountId, settings.channelsAmountName.replace("%channels", String.valueOf(api.getChannelsAmount())));
-            api.editChannelName(settings.uniqueClientAmountChannelId, settings.uniqueClientAmountChannelName.replace("%unique", String.valueOf(getWrapper().getServerHook().getRegistredClientAmount())));
-            api.editChannelName(settings.newRecordChannelId, settings.newRecordChannelName.replace("%record", String.valueOf(getWrapper().getServerHook().getOnlineRecord())));
-
-            if(settings.bannedUsersInfoStatus) {
-                api.editChannelDescription(settings.bannedUsersChannelId, this.getBans());
+            if(function.virtualServerNameEnabled) {
+                api.updateVirtualServerName(strings.virtualServerName.replace("%online", String.valueOf(api.getOnlineClients())));
             }
 
-            if(settings.adminStatusOnChannelStatus) {
-                api.editChannelDescription(settings.staffStatusChannelId, this.getAdminStatus());
+            if(function.timeChannelEnabled){
+                api.editChannelName(ids.timeChannelId, strings.timeChannelName.replace("%hms", LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))));
             }
 
-            if(settings.usersFromOtherCountryChannelStatus) {
-                api.editChannelDescription(settings.usersFromAnotherCountryChannelId, this.getUsersFromOtherCountry());
+            if(function.onlineChannelEnabled){
+                api.editChannelName(ids.onlineChannelId, strings.onlineChannelName.replace("%online", String.valueOf(api.getOnlineClients())));
             }
 
-            if(settings.administrativeChannelsStatus) {
+            if(function.pingAmountEnabled){
+                api.editChannelName(ids.pingAmountChannelId, strings.pingAmountChannelName.replace("%ping", String.valueOf(api.getAveragePing())));
+
+            }
+
+            if(function.lostPacketEnabled){
+                api.editChannelName(ids.lostPacketsChannelid, strings.lostPacketsChannelName.replace("%packets", String.valueOf(api.getAveragePacketLoss())));
+            }
+
+            if(function.uniqueClientAmountEnabled){
+                api.editChannelName(ids.uniqueClientAmountChannelId, strings.uniqueClientAmountChannelName.replace("%unique", String.valueOf(getWrapper().getServerHook().getRegistredClientAmount())));
+            }
+
+            if(function.channelsAmountEnabled){
+                api.editChannelName(ids.channelsAmountId, strings.channelsAmountName.replace("%channels", String.valueOf(api.getChannelsAmount())));
+            }
+
+            if(function.registeredClientsEnabled){
+                api.editChannelName(ids.registerdClientsChannelId, strings.registerClientsChannelName.replace("%registred", String.valueOf(getWrapper().getServerHook().getRegistredClientAmount())));
+            }
+
+            if(function.usersRecordEnabled){
+                api.editChannelName(ids.newRecordChannelId, strings.newRecordChannelName.replace("%record", String.valueOf(getWrapper().getServerHook().getOnlineRecord())));
+            }
+
+            if(function.bannedUsersInfoEnabled) {
+                api.editChannelDescription(ids.bannedUsersChannelId, this.getBans());
+            }
+
+            if(function.usersFromOtherCountryEnabled) {
+                api.editChannelDescription(ids.usersFromAnotherCountryChannelId, this.getUsersFromOtherCountry());
+            }
+
+            if(adminChannelUpdaterModule.adminStatusOnChannelStatus) {
+                api.editChannelDescription(adminChannelUpdaterModule.staffStatusChannelId, this.getAdminStatus());
+            }
+
+            if(adminChannelUpdaterModule.adminStatusOnChannelStatus) {
                 this.updateAdministrativeChannels();
             }
         } catch (Exception e){
@@ -79,11 +113,11 @@ public class ChannelUpdaterModuleImpl extends AbstractModule implements Runnable
     }
 
     private List<String> getUsersFromOtherCountry(){
-        List<String> description = new ArrayList<>(getConfiguration().channelUpdaterModuleSettings.usersFromOtherCountryChannelDescription);
+        List<String> description = new ArrayList<>(strings.usersFromOtherCountryChannelDescription);
 
         //[url=client://0/%UID] nick [/url]
-        List<String> clients = getWrapper().getClientManager().getClients().values().stream().filter(client -> !client.getCountry().equals(getConfiguration().channelUpdaterModuleSettings.defaultCountry) && !client.getCountry().isEmpty()).
-                map(n -> "[img]https://www.countryflags.io/" + n.getCountry() + "/shiny/16.png[/img]" + "[url=client://0/" + n.getUniqueIdentifier() + "] [b]" + n.getNickname() + "[/url]").collect(Collectors.toList());
+        List<String> clients = getWrapper().getClientManager().getClients().values().stream().filter(client -> !client.getCountry().equals(getConfiguration().channelUpdaterModuleSettings.channelUpdaterValuesOther.defaultCountry) && !client.getCountry().isEmpty()).
+                map(n -> "[img]https://flagcdn.com/16x12/" + n.getCountry() + ".png[/img]" + "[url=client://0/" + n.getUniqueIdentifier() + "] [b]" + n.getNickname() + "[/url]").collect(Collectors.toList());
 
         return stringUtils.findAndReplace(description, "%users", stringUtils.parseMessage(clients).toString());
 
@@ -92,7 +126,7 @@ public class ChannelUpdaterModuleImpl extends AbstractModule implements Runnable
     private void updateAdministrativeChannels(){
         FireBotAPI api = getWrapper().getFbotApi();
 
-        for (Map.Entry<String, Integer> entry : getConfiguration().adminUpdaterModuleSettings.staffUids.entrySet()) {
+        for (Map.Entry<String, Integer> entry : getConfiguration().adminUpdaterModuleSettings.administrativeUuids.entrySet()) {
             ClientInfo clientInfo = api.getClientByUid(entry.getKey());
             String nickname = api.getDatabaseClientInfoByUid(entry.getKey()).getNickname();
             if (clientInfo == null) {
@@ -148,7 +182,7 @@ public class ChannelUpdaterModuleImpl extends AbstractModule implements Runnable
         stringBuilder.append("[center][size=14][b]Administracja serwera[/b][/size] \n");
         stringBuilder.append("[/center] [hr] \n");
 
-        for (Integer integer : getWrapper().getExtendedConfiguration().adminUpdaterModuleSettings.adminsGroupsList) {
+        for (Integer integer : getWrapper().getExtendedConfiguration().adminUpdaterModuleSettings.administrativeGroupIds) {
             stringBuilder.append(" \n");
 
             int clientAmount = getWrapper().getFbotApi().getServerGroupClientsAmount(integer);

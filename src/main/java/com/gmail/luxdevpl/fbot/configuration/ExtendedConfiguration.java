@@ -22,15 +22,15 @@ import java.util.Map;
 @CfgComment("▀░░ ▀▀▀░ ▀▀▀▀ ░░▀░░")
 @CfgComment("https://github.com/xdev-pl")
 @CfgComment(" ")
-@CfgComment("For help see: https://tsforum.pl/forum/311-automatyzuj%C4%85cy-bot-fbot/")
-@CfgComment("Welcome to the advanded module configuration file.")
+@CfgComment("Discord for help: luxkret#7721 or luxdevpl@gmail.com")
+@CfgComment("Welcome to the advanced module configuration file.")
 @CfgComment(" ")
 
 public class ExtendedConfiguration {
 
-    @CfgComment("Ustawienia dotyczace klasy zarzadzajacej aktualizatorem kanalow/informacji administracyjnych")
+    @CfgComment("Ustawienia dotyczace funkcji aktualizatora wszystkie co odnosi sie do administracji, kanały itp")
     @CfgName("admin-updater-module-settings")
-    public OtherModulesSettings adminUpdaterModuleSettings = new OtherModulesSettings();
+    public AdminChannelUpdaterModule adminUpdaterModuleSettings = new AdminChannelUpdaterModule();
 
     @CfgComment("Ustawienia dotyczace klasy zarzadzajacej aktualizatorem kanalow informacyjnych")
     @CfgName("channel-updater-module-settings")
@@ -72,22 +72,39 @@ public class ExtendedConfiguration {
     @CfgName("client-added-to-servergroup-listener-settings")
     public ClientAddedToServerGroupListenerSettings clientAddedToServerGroupListener = new ClientAddedToServerGroupListenerSettings();
 
-    public static class OtherModulesSettings {
+    public static class AdminChannelUpdaterModule {
+
+        //TODO podpiac booleany
+        @CfgComment("Czy bot ma aktualizować status online/offline/afk w nazwie kanału administratora?")
+        @CfgComment("true - wlaczony | false - wylaczony")
+        public boolean channelNameStatusEnabled = true;
+
+        @CfgComment("Czy bot ma aktualizować status administratora w >opisie< kanału administratora?")
+        @CfgComment("true - wlaczony | false - wylaczony")
+        public boolean channelDescStatusEnabled = true;
+
+        @CfgComment("Czy kanal od aktualizacji statusu administracji ma byc aktualizowany?")
+        @CfgComment("true - wlaczony | false - wylaczony")
+        public boolean adminStatusOnChannelStatus = false;
+
+        @CfgComment("ID Kanalu na ktorym ma byc opis aktywnej administracji")
+        public int staffStatusChannelId = 0;
 
         @CfgComment("Lista grup administracyjnych, podawaj wszystko według schematu poniżej.")
+        @CfgComment("Musisz tu podać wszystkie id grup administratorow np. Mod,Helper,TestAdmin itp")
         @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
-        public List<Integer> adminsGroupsList = ImmutableList.<Integer> builder()
+        public List<Integer> administrativeGroupIds = ImmutableList.<Integer> builder()
                 .add(1)
                 .add(2)
                 .add(3)
                 .build();
 
-        @CfgComment("Lista administratorow, podawaj ich UniqueID i ID kanału wedlug podanego schematu.")
+        @CfgComment("Lista administratorow, podawaj ich UUID i ich ID kanału wedlug podanego schematu.")
         @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
-        public Map<String, Integer> staffUids = ImmutableMap.<String, Integer>builder()
-                .put("jakies_uid_administratora_x", 1)
-                .put("jakies_uid_administratora_y", 2)
-                .put("jakies_uid_administratora_z", 3)
+        public Map<String, Integer> administrativeUuids = ImmutableMap.<String, Integer>builder()
+                .put("podaj_tu_uuid_admina_numer_1", 1)
+                .put("podaj_tu_uuid_admina_numer_2", 2)
+                .put("podaj_tu_uuid_admina_numer_3", 3)
                 .build();
 
 
@@ -102,213 +119,297 @@ public class ExtendedConfiguration {
 
         @CfgComment("Opisy kanałów administracji")
         @CfgComment("Tutaj mozesz skonfigurowac opisy poszczegolnych kanalow administracji")
+        @CfgComment("Kanały te są aktualizowane gdy administrator zmieni swój status, np. wyjdzie z ts3, bedzie afk, lub wejdzie na ts")
         @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
         public Map<String, ArrayList<String>> adminChannelsDescription = ImmutableMap.<String, ArrayList<String>> builder()
-                .put("uid_1", new ArrayList<>(Arrays.asList("Administrator: AMELKA", "Kontakt: xyz", "Snap: xyz", "costam: xyz", " ", "[hr]", "[b]Ostatnio aktywny/a: %lastTimeActive")))
-                .put("uid_2", new ArrayList<>(Arrays.asList("Administrator: luxdevpl", "Kontakt: xyz", "Snap: xyz", "costam: xyz", " ", "[hr]", "[b]Ostatnio aktywny/a: %lastTimeActive")))
+                .put("uid_luxdevpl", new ArrayList<>(Arrays.asList(
+                        "Administrator: luxdevpl", "Kontakt: kontakt", "Snapchat: snapchat", "forum: forum", " ", "[hr]", "[b]Ostatnio aktywny/a: %lastTimeActive")))
+                .put("uid_jakisinnyadmin", new ArrayList<>(Arrays.asList(
+                        "Administrator: luxdevpl", "Kontakt: kontakt", "Snapchat: snapchat", "forum: forum", " ", "[hr]", "[b]Ostatnio aktywny/a: %lastTimeActive")))
+                .put("uid_trzeciadmin", new ArrayList<>(Arrays.asList(
+                        "Administrator: luxdevpl", "Kontakt: kontakt", "Snapchat: snapchat", "forum: forum", " ", "[hr]", "[b]Ostatnio aktywny/a: %lastTimeActive")))
                 .build();
     }
 
     public static class ChannelUpdaterModuleSettings {
 
-        @CfgComment("Czy funkcja najnowszych uzytkownikow ma byc wlaczona?")
+        //todo add new booleans check
+        @CfgComment("Tutaj ustawisz czy poszczegolne ustawienia maja byc wlaczone lub wylaczone")
+        @CfgComment("W kazdym miejscu mozesz zostawic true albo false")
         @CfgComment("true - wlaczony | false - wylaczony")
-        public boolean newUsersChannelStatus = false;
+        public ChannelUpdaterFunctionsStatus channelUpdaterFunctionsStatus = new ChannelUpdaterFunctionsStatus();
 
-        @CfgComment("Czy funkcja rekordu uzytkownikow ma byc wlaczona?")
-        @CfgComment("true - wlaczony | false - wylaczony")
-        public boolean usersRecordChannelStatus = false;
+        @CfgComment("Tu ustawisz wszystkie nazwy kanałów, i zmienisz niektóre opisy.")
+        public ChannelUpdaterModuleValues channelUpdaterModuleValues = new ChannelUpdaterModuleValues();
 
-        @CfgComment("Czy funkcja zbanowanych uzytkownikow ma byc wlaczona?")
-        @CfgComment("true - wlaczony | false - wylaczony")
-        public boolean bannedUsersInfoStatus = false;
+        @CfgComment("Tu ustawisz wszystkie id kanałów")
+        public ChannelUpdaterValuesID channelUpdaterValuesID = new ChannelUpdaterValuesID();
 
-        @CfgComment("Czy kanal od aktualizacji statusu administracji ma byc aktualizowany?")
-        @CfgComment("true - wlaczony | false - wylaczony")
-        public boolean adminStatusOnChannelStatus = false;
+        @CfgComment("Tu znajduje sie reszta ustawien")
+        public ChannelUpdaterValuesOther channelUpdaterValuesOther = new ChannelUpdaterValuesOther();
 
-        @CfgComment("Czy kanal z uzytkownikami z innego kraju ma byc wlaczony?")
-        @CfgComment("true - wlaczony | false - wylaczony")
-        public boolean usersFromOtherCountryChannelStatus = false;
+        public static class ChannelUpdaterFunctionsStatus {
 
-        @CfgComment("Czy bot ma aktualizowac kanaly administratorow? (status)")
-        @CfgComment("true - wlaczony | false - wylaczony")
-        public boolean administrativeChannelsStatus = false;
+            @CfgComment("Czy bot ma aktualizować kanał z najnowszymi uzytkownikami na ts3?")
+            public boolean newUsersEnabled = false;
 
-        @CfgComment("Nazwa serwera ts3")
-        public String virtualServerName = "Serwer TeamSpeak 3 [ONLINE: %online]";
+            @CfgComment("Czy kanał z rekordem uzytkownikow ma sie zmieniac?")
+            public boolean usersRecordEnabled = false;
 
-        @CfgComment("ID Kanalu na ktorym ma byc opis aktywnej administracji")
-        public int staffStatusChannelId = 0;
+            @CfgComment("Czy kanał ze zbanowanymi uzytkownikami ma sie zmieniac?")
+            public boolean bannedUsersInfoEnabled = false;
 
-        @CfgComment("ID kanalu z najnowszymi uzytkownikami")
-        public int newUserChannelId = 0;
+            @CfgComment("Czy kanal z uzytkownikami z innego kraju sie zmieniac?")
+            public boolean usersFromOtherCountryEnabled = false;
 
-        @CfgComment("Nazwa kanalu z aktualna godzina")
-        public String timeChannelName = "Godzina: %hms";
+            @CfgComment("Czy kanał z aktualna godzina ma sie zmieniać?")
+            public boolean timeChannelEnabled = false;
+            @CfgComment("Czy nazwa serwera ma sie zmieniac?")
+            public boolean virtualServerNameEnabled = false;
 
-        @CfgComment("ID kanalu z godzina")
-        public int timeChannelId = 0;
+            @CfgComment("Czy nazwa kanalu z aktualna iloscia osob online ma sie zmieniac?")
+            public boolean onlineChannelEnabled = false;
 
-        @CfgComment("ID kanalu z lista banow")
-        public int bannedUsersChannelId = 0;
+            @CfgComment("Czy kanal z unikalnymi uzytkownikami ma sie zmieniac?")
+            public boolean uniqueClientAmountEnabled = false;
 
-        @CfgComment("ID kanalu z iloscia zarejestrowanych osob")
-        public int registerdClientsChannelId = 0;
+            @CfgComment("Czy kanal ze straconymi pakietami ma sie zmieniac?")
+            public boolean lostPacketEnabled = false;
 
-        @CfgComment("Nazwa kanalu z iloscia zarejestrowanych osob")
-        public String registerClientsChannelName = "Zarejestrowanych osob: %registred";
+            @CfgComment("Czy kanał z iloscia kanałów na ts3 ma sie zmieniac?")
+            public boolean channelsAmountEnabled = false;
 
-        @CfgComment("ID kanalu z iloscia unikalnych osob")
-        public int uniqueClientAmountChannelId = 0;
+            @CfgComment("Czy kanal z iloscia prywatnych kanałów ma sie zmieniac?")
+            public boolean privateChannelsAmountEnabled = false;
 
-        @CfgComment("Nazwa kanalu z iloscia unikalnych osob")
-        public String uniqueClientAmountChannelName = "Unikalnych osob: %unique";
+            @CfgComment("Czy kanał z aktualnym pingiem ma sie zmieniac?")
+            public boolean pingAmountEnabled = false;
 
-        @CfgComment("Nazwa kanalu z aktualna iloscia % straconych pakietow")
-        public String lostPacketsChannelName = "Stracone pakiety: %packets";
+            @CfgComment("Czy kanał z iloscia zarejestrowanych uzytkownikow ma sie zmieniac?")
+            public boolean registeredClientsEnabled = false;
 
-        @CfgComment("ID kanalu z straconymi pakietami")
-        public int lostPacketsChannelid = 0;
 
-        @CfgComment("Nazwa kanalu z aktualna iloscia online osob")
-        public String onlineChannelName = "Online: %online";
+        }
 
-        @CfgComment("ID kanalu z aktualna iloscia osob")
-        public int onlineChannelId = 0;
+        public static class ChannelUpdaterModuleValues {
+            @CfgComment("Nazwa serwera ts3")
+            public String virtualServerName = "Najlepszy serwer TeamSpeak3! [Aktualnie online: %online]";
 
-        @CfgComment("Nazwa kanalu z aktualna iloscia kanalow serwera")
-        public String channelsAmountName = "Ilość Kanałów: %channels";
+            @CfgComment("Nazwa kanalu z aktualna godzina")
+            public String timeChannelName = "Aktualna godzina: %hms";
 
-        @CfgComment("ID kanalu z aktualna iloscia kanalow serwera")
-        public int channelsAmountId = 0;
+            @CfgComment("Nazwa kanalu z iloscia zarejestrowanych osob")
+            @CfgComment("Jest to liczba aktualnie zarejestrowanych osob na twoim ts3")
+            public String registerClientsChannelName = "Zarejestrowanych osob: %registred";
 
-        @CfgComment("Nazwa kanalu z aktualna iloscia kanalow serwera")
-        public String pingAmountChannelName = "Ping: %ping";
+            @CfgComment("Nazwa kanalu z aktualna iloscia online osob")
+            public String onlineChannelName = "Aktualnie mamy %online osób online";
 
-        @CfgComment("ID kanalu z aktualna iloscia pingu serwera")
-        public int pingAmountChannelId = 0;
+            @CfgComment("Nazwa kanalu z iloscia unikalnych osob")
+            @CfgComment("Jest to liczba unikalnych osob ktore weszly na serwer od poczatku ts3")
+            public String uniqueClientAmountChannelName = "Unikalnych osob: %unique";
 
-        @CfgComment("ID kanalu z aktualnym rekordem uzytkownikow")
-        public int newRecordChannelId = 0;
+            @CfgComment("Nazwa kanalu z aktualna iloscia % straconych pakietow")
+            public String lostPacketsChannelName = "Stracone pakiety: %packets";
 
-        @CfgComment("Nazwa kanalu z aktualnym rekordem uzytkownikow")
-        public String newRecordChannelName = "Rekord uzytkownikow: %record";
+            @CfgComment("Nazwa kanalu z aktualna iloscia kanalow serwera")
+            public String channelsAmountName = "Ilość Kanałów: %channels";
 
-        @CfgComment("ID Kanalu z uzytkownikami z innego kraju")
-        public int usersFromAnotherCountryChannelId = 0;
+            //todo add
+            @CfgComment("Nazwa kanalu z aktualna iloscia prywatnych kanalow serwera")
+            public String privateChannelsAmountName = "Ilość prywatnych kanałów: %channels";
 
-        @CfgComment("Opis kanalu z rekordem uzytkownikow")
-        @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
-        public List<String> newRecordChannelDescription = ImmutableList.<String>builder()
-                .add("[hr]")
-                .add("[size=14] Aktualny rekord uzytkownikow [/size]")
-                .add("[hr]")
-                .add("Aktualny rekord uzytkownikow wynosi %record")
-                .add("Zostal ustanowiony: %date")
-                .add("[hr]")
-                .build();
+            @CfgComment("Nazwa kanalu z aktualna iloscia kanalow serwera")
+            public String pingAmountChannelName = "Aktualny Ping: %ping";
 
-        @CfgComment("Ile ma byc osob w liscie najnowszych uzytkownikow?")
-        public int newUsersAmountIndex = 10;
+            @CfgComment("Nazwa kanalu z aktualnym rekordem uzytkownikow")
+            public String newRecordChannelName = "Rekord online: %record";
 
-        @CfgComment("Opis kanalu z najnowszymi uzytkownikami")
-        @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
-        public List<String> newUsersChannelDescription = ImmutableList.<String>builder()
-                .add("[hr]")
-                .add("[size=14] 10 Najnowszych uzytkownikow na naszym Serwerze[/size]")
-                .add("[hr]")
-                .add("%newUsers")
-                .add("[hr]")
-                .build();
+            @CfgComment("Opis kanalu z rekordem uzytkownikow")
+            @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
+            public List<String> newRecordChannelDescription = ImmutableList.<String>builder()
+                    .add("[hr]")
+                    .add("[size=14] Aktualny rekord uzytkownikow [/size]")
+                    .add("[hr]")
+                    .add("[b]Aktualny rekord uzytkownikow wynosi %record")
+                    .add("[b]Zostal ustanowiony: %date")
+                    .add("[hr]")
+                    .build();
 
-        @CfgComment("Jaki kraj jest domyslnym krajem na ktorym przebywaja uzytkownicy?")
-        public String defaultCountry = "PL";
+            @CfgComment("Opis kanalu z najnowszymi uzytkownikami")
+            @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
+            public List<String> newUsersChannelDescription = ImmutableList.<String>builder()
+                    .add("[hr]")
+                    .add("[size=14] 10 Najnowszych uzytkownikow na naszym Serwerze[/size]")
+                    .add("[hr]")
+                    .add("%newUsers")
+                    .add("[hr]")
+                    .build();
 
-        @CfgComment("Opis kanalu z osobami z zagranicy")
-        @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
-        public List<String> usersFromOtherCountryChannelDescription = ImmutableList.<String>builder()
-                .add("[hr]")
-                .add("[size=14] Osoby z innego kraju [/size]")
-                .add("[hr]")
-                .add("%users")
-                .add("[hr]")
-                .build();
+            @CfgComment("Opis kanalu z osobami z zagranicy")
+            @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
+            public List<String> usersFromOtherCountryChannelDescription = ImmutableList.<String>builder()
+                    .add("[hr]")
+                    .add("[size=14] Osoby z innego kraju [/size]")
+                    .add("[hr]")
+                    .add("%users")
+                    .add("[hr]")
+                    .build();
+        }
+
+        public static class ChannelUpdaterValuesID {
+            @CfgComment("ID kanalu z najnowszymi uzytkownikami")
+            public int newUserChannelId = 0;
+
+            @CfgComment("ID kanalu z godzina")
+            public int timeChannelId = 0;
+
+            @CfgComment("ID kanalu z lista banow")
+            public int bannedUsersChannelId = 0;
+
+            @CfgComment("ID kanalu z iloscia zarejestrowanych osob")
+            public int registerdClientsChannelId = 0;
+
+            @CfgComment("ID kanalu z iloscia unikalnych osob")
+            public int uniqueClientAmountChannelId = 0;
+
+            @CfgComment("ID kanalu z straconymi pakietami")
+            public int lostPacketsChannelid = 0;
+
+            @CfgComment("ID kanalu z aktualna iloscia osob")
+            public int onlineChannelId = 0;
+
+            @CfgComment("ID kanalu z aktualna iloscia kanalow serwera")
+            public int channelsAmountId = 0;
+
+            @CfgComment("ID kanalu z aktualna iloscia pingu serwera")
+            public int pingAmountChannelId = 0;
+
+            @CfgComment("ID kanalu z aktualnym rekordem uzytkownikow")
+            public int newRecordChannelId = 0;
+
+            @CfgComment("ID Kanalu z uzytkownikami z innego kraju")
+            public int usersFromAnotherCountryChannelId = 0;
+        }
+
+        public static class ChannelUpdaterValuesOther {
+            @CfgComment("Ile ma byc osob w liscie najnowszych uzytkownikow?")
+            public int newUsersAmountIndex = 10;
+
+            @CfgComment("Jaki kraj jest domyslnym krajem na ktorym przebywaja uzytkownicy?")
+            @CfgComment("PL, DE, GB, FRA etc.")
+            public String defaultCountry = "PL";
+        }
 
     }
 
     public static class HelpCenterModule {
 
-        @CfgComment("Czy sprawdzanie wydarzen na centrum pomocy ma byc wlaczone?")
-        @CfgComment("Automatyczna ranga - mezczyna/kobieta, oczekiwanie na administratora itd.")
+        //TODO SPRAWDZANIE BOOLEAN
+
+        @CfgComment("Czy ogólnie całe centrum pomocy ma być aktywne?")
+        @CfgComment("Automatyczna ranga - mezczyna/kobieta, oczekiwanie na administratora, prywatny kanał itd.")
         @CfgComment("true - wlaczony | false - wylaczony")
         public boolean helpCenterModuleStatus = true;
 
-        @CfgComment("Co ile czasu bot ma sprawdzac kanal do pomocy uzytkownikom")
-        public int helpCenterModuleInterval = 10;
+        @CfgComment("Poszczegolne ustawienia dot. nadawania rang.")
+        public RankAssignerModule rankAssignerModule = new RankAssignerModule();
 
-        @CfgComment("ID Grupy kobieta")
-        public int womanGroupId = 0;
+        @CfgComment("Poszczegolne ustawienia dot. pomocy uzytkownikowi")
+        public AdminHelpSectorModule adminHelpSectorModule = new AdminHelpSectorModule();
 
-        @CfgComment("ID Grupy mezczyna")
-        public int manGroupId = 0;
+        @CfgComment("Poszczegolne ustawienia dot. prywatnych kanałów")
+        public PrivateChannelAssignerModule privateChannelAssignerModule = new PrivateChannelAssignerModule();
 
-        @CfgComment("ID Kanalu na ktorym na byc nadawana ranga kobieta")
-        public int womanGroupAssignerChannelId = 0;
+        public static class RankAssignerModule {
+            @CfgComment("Czy sekcja od nadawania rang (mezczyzna, kobieta) ma byc aktywna?")
+            @CfgComment("true - wlaczony | false - wylaczony")
+            public boolean rankAssignerEnabled = true;
 
-        @CfgComment("ID Kanalu na ktorym ma byc nadawana ranga mezczyzna")
-        public int manGroupAssignerChannelId = 0;
+            @CfgComment("Czy ma byc wymagany spedzony czas aby nadac kobiete/mezczyzne?")
+            @CfgComment("Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10")
+            public int timeSpentRequirement = 0;
 
-        @CfgComment("ID Grup typu Administrator")
-        @CfgComment("Wszyscy z grup typu Administrator będą dostawać powiadomienia z centrum pomocy.")
-        public List<Integer> administratorGroupId = ImmutableList.<Integer> builder()
-                .add(1)
-                .add(2)
-                .build();
+            @CfgComment("Informacja gdy uzytkownik jest juz zarejestrowany")
+            public String userAlreadyRegistered = "Jestes juz zarejestrowany/a.";
 
-        @CfgComment("Czy ma byc wymagany spedzony czas aby stworzyc uzytkownikowi prywatna strefe?")
-        @CfgComment("Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10")
-        public int channelCreatorTimeRequirement = 0;
+            @CfgComment("Podaj tu id grupy kobieta:")
+            public int womanGroupId = 0;
 
-        @CfgComment("ID Kanalu na ktory ma wejsc uzytkownik aby dostac prywatna strefe.")
-        public int channelCreatorChannelId = 0;
+            @CfgComment("Podaj tu id grupy mezczyzna:")
+            public int manGroupId = 0;
 
-        @CfgComment("Jaka ma byc ilosc subkanalow stworzonych w prywatnej strefie uzytkownika?")
-        public int channelsToBeCreatedAmount = 3;
+            @CfgComment("ID Kanalu na ktorym na byc nadawana ranga kobieta:")
+            public int womanGroupAssignerChannelId = 0;
 
-        @CfgComment("ID Kanalu na ktorym są uzytkownicy którzy oczekują pomocy administratora")
-        public int helpCenterAdminChannelid = 0;
+            @CfgComment("ID Kanalu na ktorym ma byc nadawana ranga mezczyzna:")
+            public int manGroupAssignerChannelId = 0;
 
-        @CfgComment("ID kanalu od ktorego maja sie tworzyc prywatne kanaly uzytkownikow")
-        public int startWithPrivateChannelsId = 0;
+        }
 
-        @CfgComment("ID grupy ktora ma nadac bot po stworzeniu prywatnej strefy")
-        public int channelAdminGroup = 0;
+        public static class AdminHelpSectorModule {
+            @CfgComment("Czy sekcja od pomocy uzytkownikowi przez administratora (czekam na admina) ma byc wlaczona?")
+            @CfgComment("true - wlaczony | false - wylaczony")
+            public boolean adminHelpSectorEnabled = true;
 
-        @CfgComment("Czy ma byc wymagany spedzony czas aby nadac kobiete/mezczyzne?")
-        @CfgComment("Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10")
-        public int timeSpentRequirement = 0;
+            @CfgComment("Czy ma byc wymagany spedzony czas aby pomóc uzytkownikowi?")
+            @CfgComment("Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10")
+            public int timeSpentRequirement = 0;
 
-        @CfgComment("Wiadomosc do administratorow gdy ktos na nich oczekuje")
-        public String someoneNeedHelp = "Użytkownik %nickname oczekuje na twoją pomoc!";
+            @CfgComment("Wiadomosc do administratorow gdy ktos na nich oczekuje")
+            public String someoneNeedHelp = "Użytkownik %nickname oczekuje na twoją pomoc!";
 
-        @CfgComment("Informacja gdy uzytkownik jest juz zarejestrowany")
-        public String userAlreadyRegistered = "Jestes juz zarejestrowany/a.";
+            @CfgComment("Co ile sekund bot ma wysylac powiadomienia o pobycie uzytkownikow?")
+            public int adminHelpSectorInterval = 10;
 
-        @CfgComment("Jak ma sie rozpoczynac nazwa subkanalu?")
-        @CfgComment("Zostaw spacje na koncu, po nazwie bedzie podany numer.")
-        public String subchannelStartWith = "Kanal ";
+            @CfgComment("ID Kanalu na ktorym są uzytkownicy którzy oczekują pomocy administratora")
+            public int helpCenterAdminChannelid = 0;
 
-        @CfgComment("Opis nowo stworzonego prywatnego kanału")
-        @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
-        public List<String> newCreatedPrivateChannelDescription = ImmutableList.<String>builder()
-                .add("[hr]")
-                .add("[size=14] Prywatny kanał [/size]")
-                .add("[hr]")
-                .add("Stworzony: %date")
-                .add("Właściciel: %owner")
-                .add("[hr]")
-                .build();
+            @CfgComment("Podaj tu wszystkie id grup ktore maja byc powiadamiane o potrzebnej pomocy")
+            public List<Integer> administratorGroupId = ImmutableList.<Integer> builder()
+                    .add(1)
+                    .add(2)
+                    .build();
+        }
+
+        public static class PrivateChannelAssignerModule {
+            @CfgComment("Czy sekcja od nadawania rang (mezczyzna, kobieta) ma byc aktywna?")
+            @CfgComment("true - wlaczony | false - wylaczony")
+            public boolean privateChannelAssignerEnabled = true;
+
+            @CfgComment("Czy ma byc wymagany spedzony czas aby stworzyc uzytkownikowi prywatna strefe?")
+            @CfgComment("Zostaw na: 0 aby nie byl wymagany, czas podawaj w minutach, np. 10")
+            public int channelCreatorTimeRequirement = 0;
+
+            @CfgComment("ID Kanalu na ktory ma wejsc uzytkownik aby dostac prywatna strefe.")
+            public int channelCreatorChannelId = 0;
+
+            @CfgComment("Jaka ma byc ilosc subkanalow stworzonych w prywatnej strefie uzytkownika?")
+            public int channelsToBeCreatedAmount = 3;
+
+            @CfgComment("ID kanalu od ktorego maja sie tworzyc prywatne kanaly uzytkownikow")
+            @CfgComment("Od tego kanału beda wszystkie kanały prywatne, zazwyczaj jest to ostatni kanał na ts.")
+            public int startWithPrivateChannelsId = 0;
+
+            @CfgComment("ID grupy kanałowej ktora ma nadac bot po stworzeniu prywatnej strefy")
+            public int channelAdminGroup = 0;
+
+            @CfgComment("Jak ma sie rozpoczynac nazwa subkanalu?")
+            @CfgComment("Zostaw spacje na koncu, po nazwie bedzie podany numer podkanalu.")
+            public String subchannelStartWith = "Kanal ";
+
+            @CfgComment("Opis nowo stworzonego prywatnego kanału")
+            @CfgCollectionStyle(CfgCollectionStyle.CollectionStyle.ALWAYS_NEW_LINE)
+            public List<String> newCreatedPrivateChannelDescription = ImmutableList.<String>builder()
+                    .add("[hr]")
+                    .add("[size=14] Prywatny kanał [/size]")
+                    .add("[hr]")
+                    .add("[center][b]Stworzony: %date")
+                    .add("Właściciel: %owner")
+                    .add("[hr]")
+                    .build();
+
+        }
 
     }
 

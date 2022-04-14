@@ -85,6 +85,17 @@ public class FireBotAPI {
                 .forEach(forEachChannel -> botWrapper.getUnsafeAsyncWrapper().deleteChannel(forEachChannel.getId()));
     }
 
+    public void removeChannelPermissions(int channelId){
+        try {
+            List<ChannelGroupClient> channelGroupClients = botWrapper.getUnsafeAsyncWrapper().getChannelGroupClientsByChannelId(channelId).get();
+
+            channelGroupClients.forEach(channelGroupClient -> botWrapper.getUnsafeWrapper().setClientChannelGroup(8, channelId, channelGroupClient.getClientDatabaseId()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void kickUser(int clientId, String reason, boolean fromServer, boolean withPoke) {
         botWrapper.getAsyncWrapper().ifPresent(wrapper -> {
             if (fromServer) {
@@ -312,7 +323,7 @@ public class FireBotAPI {
 
     public int getOnlineClients(){
         try {
-            return botWrapper.getAsyncWrapper().get().getClients().get().size();
+            return (int) botWrapper.getAsyncWrapper().get().getClients().get().stream().filter(Client::isRegularClient).count();
         } catch (InterruptedException e) {
             botWrapper.getBotLogger().getLogger().error("Blad! W API wystapil blad przy pobieraniu ilosci osob online", e);
         }
@@ -334,7 +345,7 @@ public class FireBotAPI {
     }
 
     public void updateAdministrativeChannel(String uid){
-        int channelToUpdate = botWrapper.getExtendedConfiguration().adminUpdaterModuleSettings.staffUids.get(uid);
+        int channelToUpdate = botWrapper.getExtendedConfiguration().adminUpdaterModuleSettings.administrativeUuids.get(uid);
 
         List<String> newChannelDescription = new ArrayList<>(botWrapper.getExtendedConfiguration().adminUpdaterModuleSettings.adminChannelsDescription.get(uid));
 

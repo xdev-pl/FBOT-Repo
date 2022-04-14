@@ -10,6 +10,7 @@ import com.gmail.luxdevpl.fbot.event.IEventHandler;
 import com.gmail.luxdevpl.fbot.impl.basic.ClientImpl;
 import com.gmail.luxdevpl.fbot.basic.enums.EventTypes;
 import com.gmail.luxdevpl.fbot.launcher.IBotWrapper;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -36,7 +37,7 @@ public class ClientJoinServerListener implements IEventHandler<ClientJoinEvent> 
 
             bot.getAsyncWrapper().ifPresent(wrapper -> {
                 //Admin channel update
-                if (bot.getExtendedConfiguration().adminUpdaterModuleSettings.staffUids.containsKey(event.getUniqueClientIdentifier())) {
+                if (bot.getExtendedConfiguration().adminUpdaterModuleSettings.administrativeUuids.containsKey(event.getUniqueClientIdentifier())) {
                     bot.getFbotApi().updateAdministrativeChannel(event.getUniqueClientIdentifier());
                 }
 
@@ -53,8 +54,8 @@ public class ClientJoinServerListener implements IEventHandler<ClientJoinEvent> 
                 if(clientInfo.getTotalConnections() == 1){
                     bot.getServerHook().addNewRegistredUser();
 
-                    if(bot.getExtendedConfiguration().channelUpdaterModuleSettings.newUsersChannelStatus){
-                        bot.getFbotApi().editChannelDescription(bot.getExtendedConfiguration().channelUpdaterModuleSettings.newUserChannelId, bot.getStringUtils().getNewUsers());
+                    if(bot.getExtendedConfiguration().channelUpdaterModuleSettings.channelUpdaterFunctionsStatus.newUsersEnabled){
+                        bot.getFbotApi().editChannelDescription(bot.getExtendedConfiguration().channelUpdaterModuleSettings.channelUpdaterValuesID.newUserChannelId, bot.getStringUtils().getNewUsers());
                     }
 
                 }
@@ -66,8 +67,8 @@ public class ClientJoinServerListener implements IEventHandler<ClientJoinEvent> 
                 }
 
                 //Own channel update (if needed)
-                if(extendedConfiguration.adminUpdaterModuleSettings.staffUids.get(event.getUniqueClientIdentifier()) != null){
-                    bot.getFbotApi().editChannelName(extendedConfiguration.adminUpdaterModuleSettings.staffUids.get(event.getUniqueClientIdentifier()), event.getClientNickname() + extendedConfiguration.adminUpdaterModuleSettings.statusValues.get(1));
+                if(extendedConfiguration.adminUpdaterModuleSettings.administrativeUuids.get(event.getUniqueClientIdentifier()) != null){
+                    bot.getFbotApi().editChannelName(extendedConfiguration.adminUpdaterModuleSettings.administrativeUuids.get(event.getUniqueClientIdentifier()), event.getClientNickname() + extendedConfiguration.adminUpdaterModuleSettings.statusValues.get(1));
                 }
 
                 Channel privateChannel = clientInterface.getPrivateChannelId() != 0 ? bot.getFbotApi().getChannelById(clientInterface.getPrivateChannelId()) : null;
@@ -78,6 +79,10 @@ public class ClientJoinServerListener implements IEventHandler<ClientJoinEvent> 
 
                         clientInterface.setPrivateChannel(0);
                     } else {
+                        //TODO config check boolean
+                        wrapper.moveClient(clientInfo.getId(), clientInterface.getPrivateChannelId());
+                        wrapper.pokeClient(clientInfo.getId(), "Zostales automatycznie wrzucony na twoj prywatny kanal.");
+
                         String channelDate = privateChannel.getTopic();
                         String date = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(LocalDate.now());
 
@@ -85,9 +90,12 @@ public class ClientJoinServerListener implements IEventHandler<ClientJoinEvent> 
                             return;
                         }
 
+                        int number = Integer.parseInt(StringUtils.substringBefore(privateChannel.getName(), "."));
+
                         bot.getFbotApi().editChannelTopic(clientInterface.getPrivateChannelId(), date);
 
-                        wrapper.sendPrivateMessage(event.getClientId(), "Aktynowść twojego prywatnego kanału została podbita.");
+                        wrapper.pokeClient(event.getClientId(), "Aktynowść twojego prywatnego kanału została podbita.");
+                        bot.getFbotApi().editChannelName(privateChannel.getId(), number + ". " + clientInfo.getNickname());
                     }
                 }
 

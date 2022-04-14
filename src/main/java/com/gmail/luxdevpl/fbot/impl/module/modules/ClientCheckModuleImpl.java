@@ -65,7 +65,7 @@ public class ClientCheckModuleImpl extends AbstractModule implements Runnable {
 
                     ClientInfo clientInfo = getWrapper().getFbotApi().getClientByUid(ts3Client.getUniqueIdentifier());
 
-                    if (clientInfo.getIdleTime() > TimeUnit.MINUTES.toMillis(1)) {
+                    /*if (clientInfo.getIdleTime() > TimeUnit.MINUTES.toMillis(1)) {
                         if (clientInfo.isOutputMuted()) {
                             String idleTime = "AFK: " + getWrapper().getStringUtils().getDurationBreakdown(clientInfo.getIdleTime());
 
@@ -115,7 +115,7 @@ public class ClientCheckModuleImpl extends AbstractModule implements Runnable {
                             getWrapper().getFbotApi().removeClientFromServerGroup(clientInfo.getDatabaseId(), this.afkClientGroups.get(clientInfo.getUniqueIdentifier()));
                             this.afkClientGroups.remove(clientInfo.getUniqueIdentifier());
                         }
-                    }
+                    }*/
 
                     if (!clientInfo.isOutputMuted()) {
                         clientList.stream().filter(client -> client.getChannelId() == clientInfo.getChannelId()).forEach(user -> {

@@ -3,6 +3,8 @@ package com.gmail.luxdevpl.fbot.listeners;
 import com.github.theholywaffle.teamspeak3.api.TextMessageTargetMode;
 import com.github.theholywaffle.teamspeak3.api.event.TextMessageEvent;
 
+import com.github.theholywaffle.teamspeak3.api.wrapper.ClientInfo;
+import com.gmail.luxdevpl.fbot.api.FireBotAPI;
 import com.gmail.luxdevpl.fbot.basic.enums.EventTypes;
 import com.gmail.luxdevpl.fbot.event.IEventHandler;
 import com.gmail.luxdevpl.fbot.impl.module.AbstractModule;
@@ -34,31 +36,50 @@ public class ClientTextMessageListener implements IEventHandler<TextMessageEvent
                 });
             }
 
-//            if(message.startsWith("module")){
-//                String[] args = event.getMessage().split(" ");
-//
-//                if(args[1].equalsIgnoreCase("list")){
-//                    bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "Lista modułow");
-//                    bot.getIModuleManager().getModules().forEach(module -> bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), module.getModuleName()));
-//                    return;
-//                }
-//
-//                if(args[1].equalsIgnoreCase("disable")){
-//                    AbstractModule module = bot.getIModuleManager().getModuleByName(args[2]).get();
-//
-//                    module.disable();
-//
-//                    bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "wylaczono");
-//                }
-//
-//                if(args[1].equalsIgnoreCase("performActions")){
-//                    AbstractModule module = bot.getIModuleManager().getModuleByName(args[2]).get();
-//
-//                    module.performActions();
-//
-//                    bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "Wykonano fukcje.");
-//                }
-//            }
+            if(message.startsWith("module")){
+                ClientInfo clientInfo = bot.getFbotApi().getClientByClientId(event.getInvokerId());
+
+                if(clientInfo.isInServerGroup(532)) {
+                    bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "module <module> <list|reload|start|disable|performActions>");
+
+                    String[] args = event.getMessage().split(" ");
+
+                    if (args[1].equalsIgnoreCase("list")) {
+                        bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "Lista modułow");
+                        bot.getIModuleManager().getModules().forEach(module -> bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), module.getModuleName()));
+                        return;
+                    }
+
+                    if (args[1].equalsIgnoreCase("disable")) {
+                        AbstractModule module = bot.getIModuleManager().getModuleByName(args[2]).get();
+
+                        module.disable();
+                        bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "wylaczono");
+                    }
+
+                    if (args[1].equalsIgnoreCase("enable")) {
+                        AbstractModule module = bot.getIModuleManager().getModuleByName(args[2]).get();
+
+                        module.enable();
+                        bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "wylaczono");
+                    }
+
+                    if (args[1].equalsIgnoreCase("restart")) {
+                        AbstractModule module = bot.getIModuleManager().getModuleByName(args[2]).get();
+
+                        module.restart();
+                        bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "wylaczono");
+                    }
+
+                    if (args[1].equalsIgnoreCase("performActions")) {
+                        AbstractModule module = bot.getIModuleManager().getModuleByName(args[2]).get();
+
+                        module.performActions();
+
+                        bot.getUnsafeAsyncWrapper().sendPrivateMessage(event.getInvokerId(), "Wykonano fukcje.");
+                    }
+                }
+            }
 
             if(message.startsWith("friends")){
                 bot.getClientManager().getClient(event.getInvokerId()).ifPresent(client -> {

@@ -8,13 +8,13 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public abstract class AbstractModule {
 
-    private String moduleName;
+    private final String moduleName;
 
-    private ExtendedConfiguration configuration;
+    private final ExtendedConfiguration configuration;
 
-    private IBotWrapper wrapper;
+    private final IBotWrapper wrapper;
 
-    private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
     public AbstractModule(String name, IBotWrapper wrapper, ExtendedConfiguration configuration){
         this.moduleName = name;
@@ -22,6 +22,10 @@ public abstract class AbstractModule {
         this.configuration = configuration;
 
         this.wrapper = wrapper;
+    }
+
+    public final void greet(){
+        this.wrapper.getBotLogger().getLogger().info("Module: " + this.moduleName + " has been enabled.");
     }
 
     public abstract void performActions();

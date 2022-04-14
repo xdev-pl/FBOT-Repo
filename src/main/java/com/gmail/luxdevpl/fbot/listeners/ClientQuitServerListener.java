@@ -10,7 +10,7 @@ public class ClientQuitServerListener implements IEventHandler<ClientLeaveEvent>
     @Override
     public void handleEvent(ClientLeaveEvent event, IBotWrapper bot) {
         bot.getClientManager().getClient(event.getClientId()).ifPresent(client -> {
-            if (bot.getExtendedConfiguration().adminUpdaterModuleSettings.staffUids.containsKey(client.getUniqueIdentifier())) {
+            if (bot.getExtendedConfiguration().adminUpdaterModuleSettings.administrativeUuids.containsKey(client.getUniqueIdentifier())) {
                 bot.getFbotApi().updateAdministrativeChannel(client.getUniqueIdentifier());
             }
 

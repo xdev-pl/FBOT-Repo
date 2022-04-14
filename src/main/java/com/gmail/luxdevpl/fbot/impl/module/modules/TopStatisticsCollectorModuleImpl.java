@@ -32,4 +32,4 @@ public class TopStatisticsCollectorModuleImpl extends AbstractModule implements 
     public void run() {
         this.performActions();
     }
-}
+}//

@@ -23,10 +23,10 @@ public class HelpCenterModuleImpl extends AbstractModule implements Runnable {
     public HelpCenterModuleImpl(String name, IBotWrapper wrapper, ExtendedConfiguration configuration){
         super(name, wrapper, configuration);
 
-        this.CHANNEL_ID = getWrapper().getExtendedConfiguration().helpCenterModuleSettings.helpCenterAdminChannelid;
-        this.ADMIN_GROUPID = getWrapper().getExtendedConfiguration().helpCenterModuleSettings.administratorGroupId;
+        this.CHANNEL_ID = getWrapper().getExtendedConfiguration().helpCenterModuleSettings.adminHelpSectorModule.helpCenterAdminChannelid;
+        this.ADMIN_GROUPID = getWrapper().getExtendedConfiguration().helpCenterModuleSettings.adminHelpSectorModule.administratorGroupId;
 
-        this.HELP_MESSAGE = getWrapper().getExtendedConfiguration().helpCenterModuleSettings.someoneNeedHelp;
+        this.HELP_MESSAGE = getWrapper().getExtendedConfiguration().helpCenterModuleSettings.adminHelpSectorModule.someoneNeedHelp;
     }
 
     @Override
@@ -65,14 +65,17 @@ public class HelpCenterModuleImpl extends AbstractModule implements Runnable {
 
     private List<Client> getAdmins(List<Client> clients) {
         List<Client> admins = new ArrayList<>();
-        clients.forEach(client -> ADMIN_GROUPID.stream().filter(admin -> client.isInServerGroup(admin) && client.getChannelId() != CHANNEL_ID).map(admin -> client).forEach(admins::add));
+        clients.forEach(client -> ADMIN_GROUPID.stream().
+                filter(admin -> client.isInServerGroup(admin) && client.getChannelId() != CHANNEL_ID).
+                map(admin -> client).
+                forEach(admins::add));
         return admins;
     }
 
     @Override
     public void enable() {
         if(getConfiguration().helpCenterModuleSettings.helpCenterModuleStatus){
-            super.getExecutorService().scheduleWithFixedDelay(this, 15,getConfiguration().helpCenterModuleSettings.helpCenterModuleInterval, TimeUnit.SECONDS);
+            super.getExecutorService().scheduleWithFixedDelay(this, 15,getConfiguration().helpCenterModuleSettings.adminHelpSectorModule.adminHelpSectorInterval, TimeUnit.SECONDS);
         }
     }
 

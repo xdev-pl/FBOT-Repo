@@ -14,7 +14,7 @@ public final class Query {
             "createTimestamp bigint not null, " +
             "level int not null, " +
             "privateChannelId int not null, " +
-            "address varchar(12) not null, " +
+            "address varchar(15) not null, " +
             "primary key (clientDatabaseId)" +
             ")";
 

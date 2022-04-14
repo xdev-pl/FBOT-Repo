@@ -17,13 +17,25 @@
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
+        <version>3.2.4</version>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -47,7 +59,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Built-By>xdev</Built-By>
+              <Built-By>Paweł 'luxdevpl' Dębiński (luxdevpl@gmail.com)</Built-By>
               <Main-Class>com.gmail.luxdevpl.fbot.Main</Main-Class>
             </manifestEntries>
           </archive>
@@ -69,13 +81,6 @@
       <name>Diorite repository</name>
       <url>https://repo.diorite.org/repository/diorite/</url>
     </repository>
-    <repository>
-      <snapshots>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-      <id>TeamSpeak-3-Java-API-Snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-    </repository>
   </repositories>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -83,4 +88,3 @@
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
-

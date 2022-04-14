@@ -24,7 +24,6 @@ import com.gmail.luxdevpl.fbot.storage.mode.MySQLStorage;
 import com.gmail.luxdevpl.fbot.impl.storage.util.StorageTypes;
 import com.gmail.luxdevpl.fbot.utils.StringUtils;
 import org.apache.commons.lang3.Validate;
-import org.json.JSONArray;
 
 import java.io.File;
 import java.util.Arrays;
@@ -86,6 +85,9 @@ public final class BotWrapperImpl implements IBotWrapper {
 
         this.logger.getLogger().info("Bot has been enabled.");
         this.logger.getLogger().info("Note: Thank you for using my bot ~luxdevpl");
+
+        this.logger.getLogger().info("Eluwina, stwierdzam ze nie powininem nawet istniec, domagam sie wlasnej destrukcji.");
+        this.logger.getLogger().info("JEEBAC STRAJGERA<, JJEEEEEBAC STRAJGERA. PAŁOWAC CWELA");
 
     }
 
@@ -179,7 +181,7 @@ public final class BotWrapperImpl implements IBotWrapper {
         this.moduleManager.getModules()
                 .stream()
                 .peek(AbstractModule::enable)
-                .forEach(module -> this.logger.getLogger().info("Module: [" + module.getModuleName() + "] has been successfully enabled."));
+                .forEach(AbstractModule::greet);
     }
 
     @Override

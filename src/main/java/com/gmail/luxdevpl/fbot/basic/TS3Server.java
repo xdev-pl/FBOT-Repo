@@ -61,8 +61,8 @@ public class TS3Server {
 
             this.onlineRecordTimestamp = now.format(formatter);
 
-            if(botWrapper.getExtendedConfiguration().channelUpdaterModuleSettings.usersRecordChannelStatus) {
-                botWrapper.getFbotApi().editChannelDescription(botWrapper.getExtendedConfiguration().channelUpdaterModuleSettings.newRecordChannelId, botWrapper.getStringUtils().getUsersRecord());
+            if(botWrapper.getExtendedConfiguration().channelUpdaterModuleSettings.channelUpdaterFunctionsStatus.usersRecordEnabled) {
+                botWrapper.getFbotApi().editChannelDescription(botWrapper.getExtendedConfiguration().channelUpdaterModuleSettings.channelUpdaterValuesID.newRecordChannelId, botWrapper.getStringUtils().getUsersRecord());
             }
         }
     }
